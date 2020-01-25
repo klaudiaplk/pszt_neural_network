@@ -4,12 +4,16 @@ from math import exp
 class Neural_network:
 
     # layers bedzie wektorem, w ktorym przechowywana bedzie informacja o liczbie neuronow dla kazdej warstwy
-    def __init__(self, layers_number_of_neurons):
+    def __init__(self, layers_number_of_neurons, number_input_parameters, expectedNetworkOutput):
         layers = []
-        for i in range(layers_number_of_neurons.size() - 1):
-            layers.append(Layer(1, layers[i-1], layer))
+        layers.append(Layer(1, number_input_parameters, layers_number_of_neurons[0]))
+        for i in range(1, len(layers_number_of_neurons) - 1):
+            layers.append(Layer(1, layers[i-1], layers[i]))
+        layers.append(Layer(0, layers[-2], layers[-1]))
         self.layers = layers
-        self.networkInput = #jeden wiersz z naszej tabeli
+        self.networkInput = []
+        self.networkOutput = []
+        self.expectedNetworkOutput = expectedNetworkOutput
 
 
     def compute_outer_derivatives(self, outputValue, expectedOutputValue):
@@ -88,8 +92,8 @@ class Neural_network:
 
 
     def backPropagation(self):
-        self.compute_outer_derivatives(outputValue, expectedOutputValue)
-        for i in range(number_of_layers - 1, 0, -1):
+        self.compute_outer_derivatives(outputValue, expectedOutputValue) # ???
+        for i in range(number_of_layers - 1, 0, -1): # ???
             self.compute_inner_derivatives(i)
         self.compute_input_derivative()
 
@@ -107,15 +111,15 @@ class Neural_network:
 
 
     def processData(self):
-        self.layers[0].setInput(networkInput)
-        for i in range(1, number_of_layers, 1):
+        self.layers[0].setInput(networkInput) # ???
+        for i in range(1, number_of_layers, 1): # ???
             self.layers[i].setInput(self.layers[i - 1].get_layer_output())
         networkOutput = self.layers[-1].get_layer_output()
 
 
     def precisionReached(self, epsilon):
-        for i in range(networkOutput.size()):
-            if (abs(networkOutput[i] - expectedNetworkOutput[i]) / expectedNetworkOutput[i] > epsilon)
+        for i in range(networkOutput.size()): # ???
+            if (abs(networkOutput[i] - expectedNetworkOutput[i]) / expectedNetworkOutput[i] > epsilon): # ???
                 return False
         return True
 
