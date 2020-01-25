@@ -4,11 +4,12 @@ from math import exp
 class Neural_network:
 
     # layers bedzie wektorem, w ktorym przechowywana bedzie informacja o liczbie neuronow dla kazdej warstwy
-    def __init__(self, number_of_input_parameters, layers_number_of_neurons):
+    def __init__(self, layers_number_of_neurons):
         layers = []
-        for layer in layers_number_of_neurons - 1:
-            layers.append(Layer(1, number_of_input_parameters, layer))
+        for i in range(layers_number_of_neurons.size() - 1):
+            layers.append(Layer(1, layers[i-1], layer))
         self.layers = layers
+        self.networkInput = #jeden wiersz z naszej tabeli
 
 
     def compute_outer_derivatives(self, outputValue, expectedOutputValue):
@@ -66,17 +67,17 @@ class Neural_network:
 
 
     def compute_input_derivative(self):
-        updatedLayerNeurons = self.layers[0].get_neurons() # ???
+        updatedLayerNeurons = self.layers[0].get_layer_neurons()
         for i in range(updatedLayerNeurons.size()):
             updatedNeuron = updatedLayerNeurons.get_neuron(i)
             neuronWeights = updatedNeuron.get_weights()
             neuronSum = updatedNeuron.get_sum()
             activationDerivative = exp(neuronSum) / pow(1 + exp(neuronSum), 2)
-            neuronOutputDerivative = self.compute_output_derivative(i, layerNumber)
+            neuronOutputDerivative = self.compute_output_derivative(i, 0)
             neuronWeightsDerivative = []
             neuronSumDerivative = []
             for j in range(neuronWeights.size()):
-                usedNetworkInput = networkInput[j]
+                usedNetworkInput = self.networkInput[j]
 
                 neuronSumDerivative.append(neuronOutputDerivative * activationDerivative)
 
