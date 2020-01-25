@@ -1,16 +1,18 @@
+from random import uniform
+
+import numpy as np
 from math import exp
 
 
-class neuron:
+class Neuron:
 
-    #konstruktor
     def __init__(self):
-        self.input = [1.0]
-        self.weight = [0.000000000000001]  # na poczatku waga dla wyjscia jest ustawiana w przyblizeniu 0
         self.output = 0  # wyjscie neurona
         self.sumValue = 0  # sumator
         self.type = 0  # type=0 to neuron liniowy, type=1 to neuron sigmoidalny
         self.numberOfInputs = 1  # liczba wejsc do neurona
+        self.input = []  # wektor wejsc
+        self.weight = []  # wektor wag
 
     def sumator(self):
         x = 0
@@ -26,19 +28,20 @@ class neuron:
             z = self.sumator()
             return exp(z)/(1 + exp(z))  # sprawdzic czy o ten exp z funkcji math chodzi!
 
-    def neuron(self, type, numberOfInputs):
+    def neuron(self, apply_function_type, number_of_entries):
         self.output = 0
         self.sumValue = 0
-        self.type = type
-        self.numberOfInputs = numberOfInputs + 1  # tutaj dodajemy jedno więcej dla jedynki na koncu
-        for i in range(self.numberOfInputs):
-            self.input[i] = 0.0                   # sprawdzic funkcje resize w cpp, ktora zosala uzyta w tym miejscu
-        self.input[numberOfInputs] = 1.0  # ustawiamy ostatnie miejsce w wektorze wejsciowym na zero
+        self.type = apply_function_type
+        self.numberOfInputs = number_of_entries + 1  # tutaj dodajemy jedno więcej dla jedynki na koncu
+        # tworzymy sobie wektor o odpowiedniej wielkosci
+        self.input = np.zeros(self.numberOfInputs)
+        self.weight = np.zeros(self.numberOfInputs)
+
+        self.input[self.numberOfInputs] = 1.0  # ustawiamy ostatnie miejsce w wektorze wejsciowym na zero
 
         if self.type == 1:  # ustawianie wag warstwy ukrytej
             for i in range(self.numberOfInputs):
-                self.weight = -1  # tutaj ustawianie wartosci losowych w przyblizeniu ∼U (−1/√dim(we),1/√dim(we))
-                # - około niby (-0,18;0,18) - sprawdzic!
+                self.weight[i] = uniform(-0.18, 0.18)
         else:
             for i in range(self.numberOfInputs):
                 self.weight[i] = 0.000000000000001
