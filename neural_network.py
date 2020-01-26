@@ -32,6 +32,13 @@ class Neural_network:
 
             updatedNeuron.set_weights_derivative(neuronWeightsDerivative)
             updatedNeuron.set_sum_derivative(neuronSumDerivative)
+            #print('outer---')
+            #print(previousLayerOutput)
+            #print(self.networkOutput[0])
+            #print(self.expectedNetworkOutput[0])
+            #print(neuronWeights)
+            #print(neuronWeightsDerivative)
+            #print('outer---')
 
 
     def compute_inner_derivatives(self, layerNumber):
@@ -51,20 +58,34 @@ class Neural_network:
                 neuronSumDerivative.append(neuronOutputDerivative * activationDerivative)
 
                 neuronWeightsDerivative.append(neuronOutputDerivative * activationDerivative * previousLayerOutput[j])
+                #print('----inner weights')
+                #print(neuronOutputDerivative)
+                #print(activationDerivative)
+                #print(previousLayerOutput[j])
+                #print('----inner weights')
 
             updatedNeuron.set_weights_derivative(neuronWeightsDerivative)
             updatedNeuron.set_sum_derivative(neuronSumDerivative)
+        #print('inner---')
+        #print(layerNumber)
+        #print(previousLayer.get_layer_output())
+        #print(neuronWeightsDerivative)
+        #print('inner---')
 
 
     def compute_output_derivative(self, neuronNumber, layerNumber):
-        outputDerivative = 0
+        outputDerivative = 0.0
         nextLayer = self.layers[layerNumber + 1]
         for i in range(nextLayer.get_neuron_number()):
             neuron = nextLayer.get_neuron(i)
-            neuronSumDer = neuron.get_sum_derivative()[i] 
+            neuronSumDer = neuron.get_sum_derivative()[0] 
             neuronWeights = neuron.get_weights()
             usedNeuronWeight = neuronWeights[neuronNumber]
             outputDerivative = outputDerivative + (neuronSumDer * usedNeuronWeight)
+            #print('----compute_outer_derivatives')
+            #print(neuronSumDer)
+            #print(usedNeuronWeight)
+            #print('----compute_outer_derivatives')
         return outputDerivative
 
 
@@ -111,7 +132,11 @@ class Neural_network:
     def processData(self):
         self.layers[0].setInput(self.networkInput) # ???
         for i in range(1, len(self.layers), 1): # ???
+            #print(self.layers[i - 1].get_layer_output())
             self.layers[i].setInput(self.layers[i - 1].get_layer_output())
+            #print(self.layers[i - 1].get_layer_input())
+            
+        #print(self.layers[- 1].get_layer_output())
         self.networkOutput = self.layers[-1].get_layer_output()
 
 
@@ -124,7 +149,8 @@ class Neural_network:
 
     def process_data_and_learn(self):
         i = 0
-        while i < 5:
+        while  i < 5:
+            #print('Expected output', self.expectedNetworkOutput[0])
             self.processData()
             self.backPropagation()
             self.stochasticDescent(0.3)

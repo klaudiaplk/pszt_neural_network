@@ -20,10 +20,12 @@ class Layer:
     
     def get_layer_output(self):
         self.layerOutput = []
+        
         for neuron in self.neurons:
             self.layerOutput.append(neuron.get_neuron_output())
         #append coefficient for constant
-        self.layerOutput.append(1)
+        #self.layerOutput.append(1)
+        #print(self.layerOutput)
         return self.layerOutput
 
     def get_neuron_number(self):
@@ -39,5 +41,8 @@ class Layer:
         self.layerInput = layerInput
         for neuron in self.neurons:
             neuron.set_neuron_input(layerInput)
+        #print(layerInput)
+    def get_layer_input(self):
+        return self.layerInput
 
 

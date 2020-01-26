@@ -28,7 +28,8 @@ class Test_network:
         learningInput = []
         validationInput = []
         validationSamplesNumbers = []
-            
+         
+        #random.seed(10)
         random.seed(time.time())
         i = 0
         while i < verificationSamplesCount:
@@ -45,7 +46,6 @@ class Test_network:
             if i not in validationSamplesNumbers:
                 learningInput.append(input_data[i])
         
-
         properlyClassified = 0
 
         for i in range(learningSamplesCount):                      
@@ -68,6 +68,7 @@ class Test_network:
         trueNegative = 0
         falsePositive = 0
         falseNegative = 0
+        
 
         for i in range(verificationSamplesCount):             
         
@@ -80,19 +81,26 @@ class Test_network:
             else:
                 healthyCount += 1
             
-            if (validationInput[i].get_diagnosis() == 1.0 and network.get_network_output()[0] >= 0.5) or (validationInput[i].get_diagnosis() == 0.0 and network.get_network_output()[0] < 0.5):
+            output = network.get_network_output()[0]
+            #while output < 0.1 and output > 0:
+                #output *= 10.0
+                #print('output', output)
+            
+            if (validationInput[i].get_diagnosis() == 1.0 and output >= 0.5) or (validationInput[i].get_diagnosis() == 0.0 and output < 0.5):
                 properlyClassified += 1
 
-            if validationInput[i].get_diagnosis() == 1.0 and network.get_network_output()[0] >= 0.5:
+            if validationInput[i].get_diagnosis() == 1.0 and output >= 0.5:
                 truePositive += 1
             elif validationInput[i].get_diagnosis() == 1.0:
                 falseNegative += 1
-            elif validationInput[i].get_diagnosis() == 0.0 and network.get_network_output()[0] < 0.5:
+            elif validationInput[i].get_diagnosis() == 0.0 and output < 0.5:
                 trueNegative += 1
             else:
                 falsePositive += 1
             
-            #print(network.get_network_output()[0])
+            #print(validationInput[i].get_diagnosis()) 
+            #print(output)
+        
         
         
         print("Distribution sick:healthy ->: % 3d : % 3d" %(sickCount, healthyCount)) 
