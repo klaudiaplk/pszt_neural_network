@@ -1,7 +1,8 @@
-
 import random
-import time 
+import time
+
 import math
+
 
 class Test_network:
     
@@ -9,6 +10,10 @@ class Test_network:
         pass
     
     def scale_input_data(self, input_data):
+        """Normalize data so that their values are in the range of 0 to 1.
+
+        :param input_data: input data
+        """
         for i in range(input_data.get_data_count()):
             attrib = input_data.get_attrib(i)
             while attrib >= 1:
@@ -16,20 +21,31 @@ class Test_network:
             input_data.set_attrib(i, attrib)
     
     def set_test_network_input(self, network, input_data):
+        """Set testing data to network input.
+
+        :param network: created network
+        :param input_data: input data
+        """
         self.scale_input_data(input_data)
         prepared_input = input_data.get_attrib_list()
         prepared_input.append(1)
         network.set_network_input(prepared_input)
         
     def test_network(self, input_data, network, datasetSize):
+        """Network testing. The network is checked for: truePositive, trueNegative, falsePositive, falseNegative
+        and correct diagnosis (in percent)
+
+        :param input_data: input data
+        :param network: created network
+        :param datasetSize: size of dataset
+        """
         learningSamplesCount = math.floor((datasetSize * 3) / 4)
         verificationSamplesCount = datasetSize - learningSamplesCount
         
         learningInput = []
         validationInput = []
         validationSamplesNumbers = []
-         
-        #random.seed(10)
+
         random.seed(time.time())
         i = 0
         while i < verificationSamplesCount:
@@ -41,7 +57,6 @@ class Test_network:
                 validationSamplesNumbers.append(sampleNumber)
                 i += 1
 
-    
         for i in range(datasetSize):
             if i not in validationSamplesNumbers:
                 learningInput.append(input_data[i])
@@ -49,11 +64,9 @@ class Test_network:
         properlyClassified = 0
 
         for i in range(learningSamplesCount):                      
-            
-            
+
             self.set_test_network_input(network, learningInput[i])
-            
-            
+
             if learningInput[i].get_diagnosis() == 1.0:
                 network.set_expected_output([1.0])
             else:
@@ -68,7 +81,6 @@ class Test_network:
         trueNegative = 0
         falsePositive = 0
         falseNegative = 0
-        
 
         for i in range(verificationSamplesCount):             
         
@@ -76,17 +88,15 @@ class Test_network:
             
             network.processData()
             
-            if(validationInput[i].get_diagnosis() == 1.0):
+            if validationInput[i].get_diagnosis() == 1.0:
                 sickCount += 1
             else:
                 healthyCount += 1
             
             output = network.get_network_output()[0]
-            #while output < 0.1 and output > 0:
-                #output *= 10.0
-                #print('output', output)
             
-            if (validationInput[i].get_diagnosis() == 1.0 and output >= 0.5) or (validationInput[i].get_diagnosis() == 0.0 and output < 0.5):
+            if (validationInput[i].get_diagnosis() == 1.0 and output >= 0.5) or \
+                    (validationInput[i].get_diagnosis() == 0.0 and output < 0.5):
                 properlyClassified += 1
 
             if validationInput[i].get_diagnosis() == 1.0 and output >= 0.5:
@@ -97,17 +107,8 @@ class Test_network:
                 trueNegative += 1
             else:
                 falsePositive += 1
-            
-            #print(validationInput[i].get_diagnosis()) 
-            #print(output)
-        
-        
-        
+
         print("Distribution sick:healthy ->: % 3d : % 3d" %(sickCount, healthyCount)) 
         print("Properly classified:  % 3d in % 3d examples" %(properlyClassified, verificationSamplesCount)) 
         print("Which is:  % 2.2f percent." %(((float)(properlyClassified/verificationSamplesCount)) * 100)) 
         print("TRUE POSITIVE:  % 3d, FALSE POSITIVE:  % 3d, TRUE NEGATIVE: % 3d,  FALSE NEGATIVE: % 3d " %(truePositive, falsePositive, trueNegative, falseNegative)) 
-    
-	
-        
-        

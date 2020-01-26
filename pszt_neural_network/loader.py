@@ -1,14 +1,22 @@
+from pszt_neural_network.sample_data import Sample_data
 
-from sample_data import Sample_data
 
 class Loader:
     
     def __init__(self, filename):
+        """Load data from a file.
+
+        :param filename: file path
+        """
         self.filename = filename
         self.loadedData = []
         self.dataSize = 0
         
     def load(self):
+        """Load data from a file.
+
+        :return: list of training data
+        """
         loadedSamplesData = []
         sampleDataStrings = []
         with open(self.filename) as fp:
@@ -29,8 +37,8 @@ class Loader:
         return loadedSamplesData
     
     def get_data_size(self):
+        """Get number of individual input training data vectors
+
+        :return: number of individual input training data vectors
+        """
         return self.dataSize
-            
-            
-            
-        
