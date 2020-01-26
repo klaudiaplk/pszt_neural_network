@@ -10,7 +10,7 @@ if len(argv) > 1:
     loader = Loader(filename)
     inputSamples = loader.load()
 else:
-    loader = Loader("../Data/wdbc.data")
+    loader = Loader("plik.txt")
     inputSamples = loader.load()
     
 inputSampleSize = 13

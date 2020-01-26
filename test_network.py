@@ -71,9 +71,9 @@ class Test_network:
 
         for i in range(verificationSamplesCount):             
         
-            self.set_test_network_input(network, validationInput[i]);
+            self.set_test_network_input(network, validationInput[i])
             
-            network.processData();
+            network.processData()
             
             if(validationInput[i].get_diagnosis() == 1.0):
                 sickCount += 1
