@@ -1,6 +1,6 @@
 from random import uniform
 
-import numpy as np
+
 from math import exp, sqrt
 
 
@@ -10,11 +10,13 @@ class Neuron:
         self.output = 0
         self.sumValue = 0
         self.type = apply_function_type
-        self.numberOfInputs = number_of_inputs + 1  # tutaj dodajemy jedno więcej dla jedynki na koncu
+        self.numberOfInputs = number_of_inputs
+        #self.numberOfInputs = number_of_inputs + 1  # tutaj dodajemy jedno więcej dla jedynki na koncu
         # tworzymy sobie wektor o odpowiedniej wielkosci
         self.input_data = [0 for i in range(number_of_inputs)]
         self.input_data.append(1.0)  # ustawiamy ostatnie miejsce w wektorze wejsciowym na jeden
-        self.weights =  [0 for i in range(number_of_inputs + 1)]
+        #self.weights =  [0 for i in range(number_of_inputs + 1)]
+        self.weights =  [0 for i in range(number_of_inputs)]
 
         if self.type == 1:  # ustawianie wag warstwy ukrytej
             initial_value = 1 / (sqrt(self.numberOfInputs))
@@ -54,6 +56,7 @@ class Neuron:
         self.sum_derivative = neuronSumDerivative
 
     def get_sum(self):
+        #self.adder()
         return self.sumValue
 
     def get_sum_derivative(self):
