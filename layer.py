@@ -6,8 +6,8 @@ class Layer:
     def __init__(self, type, number_of_inputs, number_of_neurons):
         self.neuronNumber = number_of_neurons
         self.neurons = self.create_layer(self.neuronNumber, type, number_of_inputs)
-        self.networkInput = []
-        self.layerOutput = self.get_neurons_outputs(self.neurons)
+        self.layerInput = []
+        self.layerOutput = []
 
     @staticmethod
     def create_layer(neuron_number, type, number_of_inputs):
@@ -17,12 +17,14 @@ class Layer:
             neurons.append(neuron)
         return neurons
 
-    @staticmethod
-    def get_neurons_outputs(neurons):
-        layerOutput = []
-        for neuron in neurons:
-            layerOutput.append(neuron.get_neuron_output())
-        return layerOutput
+    
+    def get_layer_output(self):
+        self.layerOutput = []
+        for neuron in self.neurons:
+            self.layerOutput.append(neuron.get_neuron_output())
+        #append coefficient for constant
+        self.layerOutput.append(1)
+        return self.layerOutput
 
     def get_neuron_number(self):
         return self.neuronNumber
@@ -33,8 +35,9 @@ class Layer:
     def get_neuron(self, position):
         return self.neurons[position]
 
-    def setInput(self, networkInput):
-        self.networkInput = networkInput
+    def setInput(self, layerInput):
+        self.layerInput = layerInput
+        for neuron in self.neurons:
+            neuron.set_neuron_input(layerInput)
 
-    def get_layer_output(self):
-        return self.layerOutput
+

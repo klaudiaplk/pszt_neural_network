@@ -12,10 +12,9 @@ class Neuron:
         self.type = apply_function_type
         self.numberOfInputs = number_of_inputs + 1  # tutaj dodajemy jedno więcej dla jedynki na koncu
         # tworzymy sobie wektor o odpowiedniej wielkosci
-        self.input = np.zeros(self.numberOfInputs)
-        self.weights = np.zeros(self.numberOfInputs)
-
-        self.input[self.numberOfInputs] = 1.0  # ustawiamy ostatnie miejsce w wektorze wejsciowym na jeden
+        self.input_data = [0 for i in range(number_of_inputs)]
+        self.input_data.append(1.0)  # ustawiamy ostatnie miejsce w wektorze wejsciowym na jeden
+        self.weights =  [0 for i in range(number_of_inputs + 1)]
 
         if self.type == 1:  # ustawianie wag warstwy ukrytej
             initial_value = 1 / (sqrt(self.numberOfInputs))
@@ -30,7 +29,7 @@ class Neuron:
     def adder(self):
         x = 0
         for i in range(self.numberOfInputs):
-            x = x + self.input[i] * self.weights[i]
+            x = x + self.input_data[i] * self.weights[i]
         self.sumValue = x
         return x
 
@@ -45,6 +44,7 @@ class Neuron:
         return self.weights
 
     def get_neuron_output(self):
+        self.output = self.apply_function()
         return self.output
 
     def set_weights_derivative(self, neuronWeightsDerivative):
@@ -63,4 +63,7 @@ class Neuron:
         return self.weight_derivatives
 
     def set_weights(self, newWeights):
-        self.weight_derivatives = newWeights
+        self.weights = newWeights
+        
+    def set_neuron_input(self, input_data):
+        self.input_data = input_data
