@@ -92,6 +92,7 @@ class Test_network:
             else:
                 falsePositive += 1
             
+            #print(network.get_network_output()[0])
         
         
         print("Distribution sick:healthy ->: % 3d : % 3d" %(sickCount, healthyCount)) 

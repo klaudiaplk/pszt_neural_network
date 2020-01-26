@@ -129,6 +129,10 @@ class Neural_network:
             self.backPropagation()
             self.stochasticDescent(0.3)
             i = i + 1
+        #for j in range(self.layers[-1].get_neuron_number()):
+            #print(self.layers[-1].get_neuron(j).get_weights())
+            #print(self.layers[-1].get_neuron(j).get_weights_derivative())
+        #print('---')
     
     def set_network_input(self, inputList):
         self.networkInput = inputList
